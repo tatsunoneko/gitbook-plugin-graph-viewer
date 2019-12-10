@@ -10,10 +10,11 @@ require([
 
       // Create canvas for image to be viewed
       var imageCanvas = document.createElement('canvas');
+      var imgTopDis = window.innerHeight - 40 - e.target.naturalHeight > 0 ? (window.innerHeight - 40 - e.target.naturalHeight)/2 : 0;
       imageCanvas.setAttribute('width', e.target.naturalWidth);
       imageCanvas.setAttribute('height', e.target.naturalHeight);
+      imageCanvas.setAttribute('style', 'margin-top:' + imgTopDis + 'px');
       var ctx = imageCanvas.getContext('2d');
-      ctx.mozImageSmoothingEnabled = true;
       ctx.drawImage(e.target, 0, 0);
 
       imageViewer.appendChild(imageCanvas);
