@@ -10,19 +10,75 @@ require([
 
       // Create canvas for image to be viewed
       var imageCanvas = document.createElement('canvas');
-      var imgTopDis = window.innerHeight - 40 - e.target.naturalHeight > 0 ? (window.innerHeight - 40 - e.target.naturalHeight)/2 : 0;
-      imageCanvas.setAttribute('width', e.target.naturalWidth);
-      imageCanvas.setAttribute('height', e.target.naturalHeight);
+      var zoomFactor = 1;
+      while (e.target.naturalWidth * zoomFactor > window.innerWidth - 40 || e.target.naturalHeight * zoomFactor > window.innerHeight) {
+        zoomFactor -= 0.1;
+      }
+      var newCanvasHeight = e.target.naturalHeight * zoomFactor;
+      var newCanvasWidth = e.target.naturalWidth * zoomFactor;
+      imageCanvas.setAttribute('width', newCanvasWidth);
+      imageCanvas.setAttribute('height', newCanvasHeight);
+      var imgTopDis = window.innerHeight - 40 - newCanvasHeight > 0 ? (window.innerHeight - 40 - newCanvasHeight)/2 : 0;
       imageCanvas.setAttribute('style', 'margin-top:' + imgTopDis + 'px');
       var ctx = imageCanvas.getContext('2d');
-      ctx.drawImage(e.target, 0, 0);
+      ctx.drawImage(e.target, 0, 0, newCanvasWidth, newCanvasHeight);
 
+      // Create exit button
+      var backBtn = document.createElement('a');
+      backBtn.className = 'img-exit';
+      backBtn.id = 'gitbook-plugin-img-exit';
+      var backIcon = document.createElement('i');
+      backIcon.className = 'fa fa-arrow-left fa-lg';
+      backBtn.appendChild(backIcon);
+      backBtn.onclick = function() {
+        document.body.firstElementChild.removeChild(document.getElementById('gitbook-plugin-img-viewer'));
+      }
+
+      // Create zoom toolbar
+      var toolBar = document.createElement('div');
+      toolBar.className = 'img-toolbar';
+
+      var zoomInBtn = document.createElement('a');
+      zoomInBtn.className = 'img-toolbar-btn img-toolbar-btn-left';
+      var zoomInIcon = document.createElement('i');
+      zoomInIcon.className = 'fa fa-plus fa-lg';
+      zoomInBtn.appendChild(zoomInIcon);
+      zoomInBtn.onclick = function() {
+        zoomFactor += 0.1;
+        var newCanvasHeight = e.target.naturalHeight * zoomFactor;
+        var newCanvasWidth = e.target.naturalWidth * zoomFactor;
+        ctx.clearRect(0, 0, imageCanvas.width, imageCanvas.height);
+        imageCanvas.setAttribute('width', newCanvasWidth);
+        imageCanvas.setAttribute('height', newCanvasHeight);
+        imgTopDis = window.innerHeight - 40 - newCanvasHeight > 0 ? (window.innerHeight - 40 - newCanvasHeight)/2 : 0;
+        imageCanvas.setAttribute('style', 'margin-top:' + imgTopDis + 'px');
+        ctx.drawImage(e.target, 0, 0, newCanvasWidth, newCanvasHeight);
+      }
+
+      var zoomOutBtn = document.createElement('a');
+      zoomOutBtn.className = 'img-toolbar-btn img-toolbar-btn-right';
+      var zoomOutIcon = document.createElement('i');
+      zoomOutIcon.className = 'fa fa-minus fa-lg';
+      zoomOutBtn.appendChild(zoomOutIcon);
+      zoomOutBtn.onclick = function() {
+        zoomFactor -= 0.1;
+        var newCanvasHeight = e.target.naturalHeight * zoomFactor;
+        var newCanvasWidth = e.target.naturalWidth * zoomFactor;
+        ctx.clearRect(0, 0, imageCanvas.width, imageCanvas.height);
+        imageCanvas.setAttribute('width', newCanvasWidth);
+        imageCanvas.setAttribute('height', newCanvasHeight);
+        imgTopDis = window.innerHeight - 40 - newCanvasHeight > 0 ? (window.innerHeight - 40 - newCanvasHeight)/2 : 0;
+        imageCanvas.setAttribute('style', 'margin-top:' + imgTopDis + 'px');
+        ctx.drawImage(e.target, 0, 0, newCanvasWidth, newCanvasHeight);
+      }
+
+      toolBar.appendChild(zoomInBtn);
+      toolBar.appendChild(zoomOutBtn);
+
+      imageViewer.appendChild(backBtn);
+      imageViewer.appendChild(toolBar);
       imageViewer.appendChild(imageCanvas);
       document.body.firstElementChild.append(imageViewer);
-    }
-
-    if (e.target.id === 'gitbook-plugin-img-viewer') {
-      document.body.firstElementChild.removeChild(e.target);
     }
   });
 })

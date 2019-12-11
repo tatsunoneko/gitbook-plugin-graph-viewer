@@ -10,3 +10,55 @@
   padding: 20px;
   text-align: center;
 }
+
+.img-exit {
+  width: 22px;
+  height: 22px;
+  z-index: 1000;
+  position: fixed;
+  top: 5px;
+  left: 5px;
+  color: #364149;
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.img-exit:hover {
+  color: #ddd;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.img-toolbar {
+  width: 60px;
+  height: 30px;
+  background: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  bottom: 5vh;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 0.5vh;
+}
+
+.img-toolbar-btn {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  padding-top: 6px;
+  color: #ddd;
+}
+
+.img-toolbar-btn-left {
+  left: 0;
+  border-top-left-radius: 0.5vh;
+  border-bottom-left-radius: 0.5vh;
+}
+
+.img-toolbar-btn-right {
+  right: 0;
+  border-top-right-radius: 0.5vh;
+  border-bottom-right-radius: 0.5vh;
+}
+
+.img-toolbar-btn:hover {
+  background: rgba(0, 0, 0, 0.8);
+  color: #ddd;
+}
