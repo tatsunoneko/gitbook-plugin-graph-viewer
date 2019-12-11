@@ -35,6 +35,22 @@ require([
       }
 
       // Create zoom toolbar
+      var zoomImage = function(num) {
+        if (zoomFactor + num <= Number.EPSILON) {
+          return;
+        }
+        zoomFactor += num;
+        var newCanvasHeight = Math.round(e.target.naturalHeight * zoomFactor);
+        var newCanvasWidth = Math.round(e.target.naturalWidth * zoomFactor);
+        ctx.clearRect(0, 0, imageCanvas.width, imageCanvas.height);
+        imageCanvas.setAttribute('width', newCanvasWidth);
+        imageCanvas.setAttribute('height', newCanvasHeight);
+        imgTopDis = window.innerHeight - 40 - newCanvasHeight > 0 ? (window.innerHeight - 40 - newCanvasHeight)/2 : 0;
+        imageCanvas.setAttribute('style', 'margin-top:' + imgTopDis + 'px');
+        ctx.drawImage(e.target, 0, 0, newCanvasWidth, newCanvasHeight);
+        imageViewer.scrollLeft = newCanvasWidth + 40 - window.innerWidth > 0 ? Math.floor((newCanvasWidth - window.innerWidth + 40)/2) + 1 : 0;
+        imageViewer.scrollTop = newCanvasHeight + 40 - window.innerHeight > 0 ? Math.floor((newCanvasHeight - window.innerHeight + 40)/2) + 1 : 0;
+      }
       var toolBar = document.createElement('div');
       toolBar.className = 'img-toolbar';
 
@@ -44,16 +60,8 @@ require([
       zoomInIcon.className = 'fa fa-plus fa-lg';
       zoomInBtn.appendChild(zoomInIcon);
       zoomInBtn.onclick = function() {
-        zoomFactor += 0.1;
-        var newCanvasHeight = e.target.naturalHeight * zoomFactor;
-        var newCanvasWidth = e.target.naturalWidth * zoomFactor;
-        ctx.clearRect(0, 0, imageCanvas.width, imageCanvas.height);
-        imageCanvas.setAttribute('width', newCanvasWidth);
-        imageCanvas.setAttribute('height', newCanvasHeight);
-        imgTopDis = window.innerHeight - 40 - newCanvasHeight > 0 ? (window.innerHeight - 40 - newCanvasHeight)/2 : 0;
-        imageCanvas.setAttribute('style', 'margin-top:' + imgTopDis + 'px');
-        ctx.drawImage(e.target, 0, 0, newCanvasWidth, newCanvasHeight);
-      }
+        zoomImage(0.1);
+      };
 
       var zoomOutBtn = document.createElement('a');
       zoomOutBtn.className = 'img-toolbar-btn img-toolbar-btn-right';
@@ -61,16 +69,8 @@ require([
       zoomOutIcon.className = 'fa fa-minus fa-lg';
       zoomOutBtn.appendChild(zoomOutIcon);
       zoomOutBtn.onclick = function() {
-        zoomFactor -= 0.1;
-        var newCanvasHeight = e.target.naturalHeight * zoomFactor;
-        var newCanvasWidth = e.target.naturalWidth * zoomFactor;
-        ctx.clearRect(0, 0, imageCanvas.width, imageCanvas.height);
-        imageCanvas.setAttribute('width', newCanvasWidth);
-        imageCanvas.setAttribute('height', newCanvasHeight);
-        imgTopDis = window.innerHeight - 40 - newCanvasHeight > 0 ? (window.innerHeight - 40 - newCanvasHeight)/2 : 0;
-        imageCanvas.setAttribute('style', 'margin-top:' + imgTopDis + 'px');
-        ctx.drawImage(e.target, 0, 0, newCanvasWidth, newCanvasHeight);
-      }
+        zoomImage(-0.1);
+      };
 
       toolBar.appendChild(zoomInBtn);
       toolBar.appendChild(zoomOutBtn);
