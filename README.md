@@ -1,4 +1,4 @@
-# gitbook-plugin-img-viewer
+# gitbook-plugin-graph-viewer
 An image viewer plugin for gitbook
 
 ### About this plugin
