@@ -2,7 +2,7 @@
   "name": "gitbook-plugin-graph-viewer",
   "description": "Image viewer plugin for GitBook",
   "main": "index.js",
-  "version": "0.0.5",
+  "version": "0.1.0",
   "license": "MIT",
   "engines": {
     "gitbook": "*"
